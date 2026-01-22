@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedido de Bebidas – THG Commerce</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>Pedido de Bebidas – THG Commerce</h2>
+  <p class="subtitulo">Entrega em até 2 dias úteis • Venda por fardo</p>
+
+  <label>Nome do estabelecimento</label>
+  <input id="cliente" placeholder="Ex: Bar do João">
+
+  <label>Telefone / WhatsApp</label>
+  <input id="telefone" placeholder="(xx) xxxxx-xxxx">
+
+  <label>Endereço do estabelecimento</label>
+  <input id="endereco" placeholder="Rua, número, bairro - cidade">
+
+  <table>
+    <thead>
+      <tr>
+        <th>Produto</th>
+        <th>Qtd (Fardos)</th>
+        <th>Preço (R$)</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody id="itens">
+      <tr>
+        <td><input placeholder="Nome do produto"></td>
+        <td><input type="number" min="0" oninput="calcular()"></td>
+        <td><input type="number" min="0" step="0.01" oninput="calcular()"></td>
+        <td class="linhaTotal">0,00</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <button class="btn-add" onclick="adicionarLinha()">+ Adicionar produto</button>
+
+  <div class="total" id="totalPedido">
+    Total do pedido: R$ 0,00
+  </div>
+
+  <button type="button" onclick="gerarPDF()">Gerar PDF do Pedido</button>
+  
+  <!-- BOTÃO ENVIAR NO WHATSAPP -->
+  <button class="btn-whats" onclick="enviarWhats()">Enviar pedido no WhatsApp</button>
+
+</div>
+
+<script>
+function adicionarLinha() {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td><input placeholder="Nome do produto"></td>
+    <td><input type="number" min="0" oninput="calcular()"></td>
+    <td><input type="number" min="0" step="0.01" oninput="calcular()"></td>
+    <td class="linhaTotal">0,00</td>
+  `;
+  document.getElementById("itens").appendChild(tr);
+}
+
+function calcular() {
+  let total = 0;
+  document.querySelectorAll("#itens tr").forEach(linha => {
+    const qtd = linha.children[1].children[0].value || 0;
+    const preco = linha.children[2].children[0].value || 0;
+    const subtotal = qtd * preco;
+    linha.querySelector(".linhaTotal").innerText = subtotal.toFixed(2).replace(".", ",");
+    total += subtotal;
+  });
+  document.getElementById("totalPedido").innerText = "Total do pedido: R$ " + total.toFixed(2).replace(".", ",");
+}
+
+// FUNÇÃO PDF
+function gerarPDF() {
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+  let y = 20;
+  pdf.setFontSize(16);
+  pdf.text("PEDIDO DE BEBIDAS – THG COMMERCE", 20, y); y += 10;
+  pdf.setFontSize(11);
+  pdf.text("Entrega em até 2 dias úteis • Venda por fardo", 20, y); y += 10;
+  pdf.setFontSize(12);
+  pdf.text(`Estabelecimento: ${document.getElementById("cliente").value}`, 20, y); y += 8;
+  pdf.text(`Telefone: ${document.getElementById("telefone").value}`, 20, y); y += 8;
+  pdf.text(`Endereço: ${document.getElementById("endereco").value}`, 20, y); y += 10;
+  pdf.text("Produtos:", 20, y); y += 8;
+  document.querySelectorAll("#itens tr").forEach(linha => {
+    const produto = linha.children[0].children[0].value;
+    const qtd = linha.children[1].children[0].value;
+    const preco = linha.children[2].children[0].value;
+    const subtotal = linha.children[3].innerText;
+    if (produto) {
+      pdf.text(`• ${produto} | ${qtd} fardos | R$ ${preco} | Subtotal: R$ ${subtotal}`, 20, y);
+      y += 8;
+    }
+  });
+  y += 5;
+  pdf.text(document.getElementById("totalPedido").innerText, 20, y);
+  pdf.save("pedido-thg-commerce.pdf");
+}
+
+// FUNÇÃO WHATSAPP
+function enviarWhats() {
+  let texto = `📦 *Pedido THG Commerce*\n\n`;
+  texto += `🏪 *Cliente:* ${cliente.value}\n`;
+  texto += `📞 *Telefone:* ${telefone.value}\n`;
+  texto += `📍 *Endereço:* ${endereco.value}\n\n`;
+  texto += `📝 *Itens do pedido:*\n`;
+
+  document.querySelectorAll("#itens tr").forEach(linha => {
+    const produto = linha.children[0].children[0].value;
+    const qtd = linha.children[1].children[0].value;
+    const preco = linha.children[2].children[0].value;
+    const subtotal = linha.children[3].innerText;
+    if (produto) {
+      texto += `• ${produto} | ${qtd} fardos | R$ ${preco} | Subtotal: R$ ${subtotal}\n`;
+    }
+  });
+
+  texto += `\n💰 *${document.getElementById("totalPedido").innerText}*`;
+  texto += `\n🚚 Entrega em até 2 dias úteis.`;
+
+  const numero = "5531971115065"; // troque pelo WhatsApp da THG Commerce
+  const url = `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+  window.open(url, "_blank");
+}
+</script>
+
+</body>
+</html>
