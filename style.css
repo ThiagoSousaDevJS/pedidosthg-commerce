@@ -1,0 +1,185 @@
+/* RESET BÁSICO */
+* {
+  box-sizing: border-box;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+
+/* BODY */
+body {
+  background: linear-gradient(180deg, #eef2f7, #f8fafc);
+  margin: 0;
+  padding: 20px;
+  color: #1f2937;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 700px;
+  margin: auto;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+/* TÍTULO */
+h2 {
+  margin-top: 0;
+  text-align: center;
+  color: #0f172a;
+  font-size: 22px;
+}
+
+.subtitulo {
+  text-align: center;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 24px;
+}
+
+/* LABELS */
+label {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 14px;
+  display: block;
+  color: #334155;
+}
+
+/* INPUTS */
+input {
+  width: 100%;
+  padding: 11px 12px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+
+/* TABELA */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th {
+  background: #1e40af;
+  color: #ffffff;
+  font-size: 13px;
+  padding: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+td {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+td input {
+  text-align: center;
+  padding: 8px;
+}
+
+/* BOTÕES */
+button {
+  margin-top: 14px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, opacity 0.1s;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+  opacity: 0.95;
+}
+
+/* BOTÃO ADICIONAR */
+.btn-add {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+}
+
+/* BOTÃO PDF */
+button[onclick="gerarPDF()"] {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #fff;
+}
+
+/* BOTÃO WHATSAPP */
+.btn-whats {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #fff;
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.btn-whats:hover {
+  background: linear-gradient(135deg, #128C7E, #25D366);
+}
+
+/* TOTAL */
+.total {
+  margin-top: 18px;
+  padding: 14px;
+  background: #f1f5f9;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: right;
+  color: #0f172a;
+}
+
+/* MOBILE */
+@media (max-width: 520px) {
+
+  body {
+    padding: 12px;
+  }
+
+  .container {
+    padding: 18px;
+  }
+
+  th, td {
+    font-size: 12px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .total {
+    font-size: 16px;
+  }
+}
